@@ -13,4 +13,4 @@
 ### Alchemy
 ### Amplifire
 ### Synergy
-### Vanquish
+### Vanquish -- Hashmap
