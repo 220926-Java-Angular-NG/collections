@@ -75,20 +75,37 @@ public class VanquishHashMap<K,V> implements Map {
         }
 
     public Object put(Object key, Object value) {
+        if(this.containsKey(key)){
+            for(LinkedList<Entry> lists: buckets){
+                for(Entry node:lists){
+                    if(node.getKey().equals(key)){
+                        Object res = node.getValue();
+                        node.setValue(value);
+                        return res;
+                    }
+                }
+            }
+        }else{
         int code = Math.abs(key.hashCode()%bucketCount);
         buckets[code].add(new Node(key,value));
         elements ++;
         grow(checkCapacity(code));
-        return value;
+        }
+        return null;
     }
     public void put(Entry input) {
-        int code = Math.abs(input.getKey().hashCode()%bucketCount);
-        buckets[code].add(input);
-        elements ++;
-        grow(checkCapacity(code));
+        put(input.getKey(),input.getValue());
     }
 
     public V remove(Object key) {
+        int code = key.hashCode()%bucketCount;
+        for (Entry node:buckets[code]){
+            if (node.getKey() == key) {
+                V res = (V) node.getValue();
+                buckets[code].remove(node);
+                return res;
+            }
+        }
         return null;
     }
 
@@ -131,8 +148,10 @@ public class VanquishHashMap<K,V> implements Map {
     public Set<Entry> entrySet() {
         Set<Entry> nodes = new HashSet<Entry>();
 
-        for (LinkedList<Entry> node : buckets){
-            nodes.add((Entry) node);
+        for (LinkedList<Entry> lst : buckets){
+            for(Entry node:lst) {
+                nodes.add((Entry) node);
+            }
         }
 
         return nodes;
@@ -142,7 +161,7 @@ public class VanquishHashMap<K,V> implements Map {
 
     public int checkCapacity(int code){
         int res = 0;
-        if(elements * loadFactor > bucketCount*maxBucketCapacity){
+        if(elements > bucketCount * maxBucketCapacity * loadFactor ){
             res = res + 1; //
         }
         if(buckets[code].size()*loadFactor > maxBucketCapacity){
@@ -150,25 +169,31 @@ public class VanquishHashMap<K,V> implements Map {
         }
         return res;
     }
-    public void grow(int type){
-        switch (type){
-        case 1: //Increase buckets
-            this.bucketCount = 2*bucketCount;
-            break;
-        case 2: // Increase bucket capacity
-            this.maxBucketCapacity = 2*maxBucketCapacity;
-            return;
-        case 3: // Increase both;
-            this.bucketCount = 2*bucketCount;
-            this.maxBucketCapacity = 2*bucketCount;
-            break;
-        default:
-            break;
-        }
-        Set<Entry> old = this.entrySet();
-        initBuckets();
-        for (Entry entry:old){
-            put(entry);
+    public void grow(int type) {
+        Set<Entry> old;
+        switch (type) {
+            case 1: //Increase buckets
+                this.bucketCount = 2 * bucketCount;
+                old = this.entrySet();
+                initBuckets();
+                for (Entry entry : old) {
+                    put(entry);
+                }
+                break;
+            case 2: // Increase bucket capacity
+                this.maxBucketCapacity = 2 * maxBucketCapacity;
+                return;
+            case 3: // Increase both;
+                this.bucketCount = 2 * bucketCount;
+                this.maxBucketCapacity = 2 * bucketCount;
+                old = this.entrySet();
+                initBuckets();
+                for (Entry entry : old) {
+                    put(entry);
+                }
+                break;
+            default:
+                break;
         }
     }
 
