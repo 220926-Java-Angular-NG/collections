@@ -15,20 +15,24 @@ public class VanquishHashMap<K,V> implements Map {
      *
      */
     public VanquishHashMap() {
-        buckets = (LinkedList<Node>[]) new LinkedList[bucketCount];
+        initBuckets();
     }
 
     public VanquishHashMap(int initialCapacity) {
         this.bucketCount = initialCapacity;
-        buckets = (LinkedList<Node>[]) new LinkedList[bucketCount];
-
+        initBuckets();
     }
     public VanquishHashMap(int initialCapacity,double loadFactor) {
         this.bucketCount = initialCapacity;
         this.loadFactor=loadFactor;
-        buckets = (LinkedList<Node>[]) new LinkedList[bucketCount];
+        initBuckets();
     }
-
+    public void initBuckets(){
+        buckets = (LinkedList<Node>[]) new LinkedList[bucketCount];
+        for (int i = 0; i < bucketCount; i++) {
+            buckets[i] = new LinkedList();
+        }
+    }
     // Map functions
     public int size() {
         return bucketCount;
@@ -46,12 +50,12 @@ public class VanquishHashMap<K,V> implements Map {
         return false;
     }
 
-    public V get(Object key) {
+    public Object get(Object key) {
         return null;
     }
 
     public Object put(Object key, Object value) {
-        int code = key.hashCode()%bucketCount;
+        int code = Math.abs(key.hashCode()%bucketCount);
         buckets[code].add(new Node(key,value));
         elements ++;
         if(checkCapacity(code)){
