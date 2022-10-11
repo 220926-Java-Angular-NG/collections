@@ -7,6 +7,7 @@
 3. Provide a description of each operation in JavaDoc format.
 4. Submit a pull request to this repository with your teams code.
 5. Prepare a brief (5-10 minute) presentation of the collection with your group. Everyone must have a speaking role. 
+  - Presentations will begin at 4pm EST
 
 ## Teams
 ### Alchemy
