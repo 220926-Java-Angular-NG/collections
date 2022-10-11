@@ -10,22 +10,39 @@ public class VanquishHashMap<K,V> implements Map {
     LinkedList<Entry>[] buckets;
     /**
      *
-     * @params
+     * This is the default constructor for the hashmap
+     * that calls initBuckets method
      *
      */
+
     public VanquishHashMap() {
         initBuckets();
     }
+    /**
+     * @param initialCapacity is passed in as a parameter and this sets the number
+     * of buckets in the hash table
+     */
 
     public VanquishHashMap(int initialCapacity) {
         this.bucketCount = initialCapacity;
         initBuckets();
     }
+    /** Initial capacity and load factor passes in as parameters
+     * @param loadFactor set to 75% so to prevent the hash table from overloading
+     * sets upper limit of how full the hash table is allowed to get which is when
+     * number of entries > loadfactor * current capacity of the hash table
+     * the table is then rehashed automatically and capacity is doubled
+     */
+
     public VanquishHashMap(int initialCapacity,double loadFactor) {
         this.bucketCount = initialCapacity;
         this.loadFactor=loadFactor;
         initBuckets();
     }
+    /**
+     * Intializes the linked lists effectivly clearing the table, and creating a new with correct specifications.
+     */
+
     public void initBuckets(){
         elements = 0;
         buckets = (LinkedList<Entry>[]) new LinkedList[bucketCount];
@@ -34,14 +51,28 @@ public class VanquishHashMap<K,V> implements Map {
         }
     }
     // Map functions
+
+    /**
+     *
+     * @return the number of key value pairs store within the map
+     */
     public int size() {
         return elements;
     }
 
+    /**
+     *
+     * @return true only if there are 0 elements within the map
+     */
     public boolean isEmpty() {
         return elements == 0;
     }
 
+    /**
+     *
+     * @param key key whose presence in this map is to be tested
+     * @return true if the map contains siad key false otherwise
+     */
     public boolean containsKey(Object key) {
         int code = Math.abs(key.hashCode()%bucketCount);
         for(Entry nodes:buckets[code]){
@@ -52,6 +83,11 @@ public class VanquishHashMap<K,V> implements Map {
         return false;
     }
 
+    /**
+     *
+     * @param value value whose presence in this map is to be tested
+     * @return true if the map contains the value
+     */
     public boolean containsValue(Object value) {
         for(LinkedList<Entry> lists: buckets){
             for(Entry node:lists){
@@ -63,6 +99,11 @@ public class VanquishHashMap<K,V> implements Map {
         return false;
     }
 
+    /**
+     *
+     * @param key the key whose associated value is to be returned
+     * @return gets the value from the key given, otherwise returns null
+     */
     public Object get(Object key) {
             int code = key.hashCode()%bucketCount;
 
@@ -73,6 +114,16 @@ public class VanquishHashMap<K,V> implements Map {
             }
             return null;
         }
+
+    /**
+     *
+     * @param key key with which the specified value is to be associated
+     * @param value value to be associated with the specified key
+     * @return the value object provided is returned after it has been paired
+     * with the key object provided. If there was a value already associated with
+     * the key provided, then the object value provided replaced the previous
+     * value.
+     */
 
     public Object put(Object key, Object value) {
         if(this.containsKey(key)){
@@ -93,8 +144,16 @@ public class VanquishHashMap<K,V> implements Map {
         }
         return null;
     }
-    public void put(Entry input) {
-        put(input.getKey(),input.getValue());
+    /**
+     *
+     * @param input, an Entry Object, which contains a key and value, so call put(key,value)
+     * @return the value object provided is returned after it has been paired
+     * with the key object provided. If there was a value already associated with
+     * the key provided, then the object value provided replaced the previous
+     * value.
+     */
+    public Object put(Entry input) {
+        return put(input.getKey(),input.getValue());
     }
 
     public V remove(Object key) {
@@ -103,12 +162,17 @@ public class VanquishHashMap<K,V> implements Map {
             if (node.getKey() == key) {
                 V res = (V) node.getValue();
                 buckets[code].remove(node);
+                elements --;
                 return res;
             }
         }
         return null;
     }
-
+    /**
+     *
+     * @param m, an entire map of key value pairs, to be called in a loop
+     * @return nothing
+     */
     public void putAll(Map m) {
         Set<Entry> nodes = m.entrySet();
         for (Entry node: nodes){
@@ -116,11 +180,18 @@ public class VanquishHashMap<K,V> implements Map {
         }
     }
 
+    /**
+     * Empties the HashMap
+     */
     public void clear() {
         elements = 0;
         initBuckets();
     }
 
+    /**
+     *
+     * @return Returs a set of all keys used within the map
+     */
     public Set keySet() {
         Set<Object> keys = new HashSet<Object>();
 
@@ -133,6 +204,10 @@ public class VanquishHashMap<K,V> implements Map {
         return keys;
     }
 
+    /**
+     *
+     * @return returns a list of all values stored in the map
+     */
     public Collection values() {
         List<Object> values = new ArrayList<Object>();
 
@@ -145,6 +220,10 @@ public class VanquishHashMap<K,V> implements Map {
         return values;
     }
 
+    /**
+     *
+     * @return Gives the set of all key value pairs.
+     */
     public Set<Entry> entrySet() {
         Set<Entry> nodes = new HashSet<Entry>();
 
@@ -158,7 +237,11 @@ public class VanquishHashMap<K,V> implements Map {
     }
     // map functions
 
-
+    /**
+     *
+     * @param code hashcode to investigate a specific bucket
+     * @return a 0 1 2 or 3, to be used in grow function
+     */
     public int checkCapacity(int code){
         int res = 0;
         if(elements > bucketCount * maxBucketCapacity * loadFactor ){
@@ -169,6 +252,15 @@ public class VanquishHashMap<K,V> implements Map {
         }
         return res;
     }
+    /**
+     *
+     * @param type Takes in an integer from the checkCapacity method,
+     * and doubles the bucketCount, maxBucketCapacity, or both. Takes the
+     * LinkedLists from the previous array. Creates a new LinkedList array with
+     * the new bucketCount and maxBucketCapacity, and inserts the old elements to
+     * the new array.
+     */
+
     public void grow(int type) {
         Set<Entry> old;
         switch (type) {

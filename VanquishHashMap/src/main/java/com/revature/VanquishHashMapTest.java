@@ -24,26 +24,26 @@ public class VanquishHashMapTest{
     public void forceGrow(){
         VanquishHashMap<String, Integer> birdNumber = new VanquishHashMap<String, Integer>(1);
         birdNumber.put("chicken",9);
-        birdNumber.put("chicken",2);
-        birdNumber.put("chicken",6);
-        birdNumber.put("chicken",10);
-        birdNumber.put("chicken",12);
-        birdNumber.put("chicken",123);
-        birdNumber.put("chicken",1234);
-        System.out.println(birdNumber.size());
-        Assertions.assertEquals(1234,birdNumber.get("chicken"));
+        birdNumber.put("chiken",2);
+        birdNumber.put("cickn",6);
+        birdNumber.put("chicn",10);
+        birdNumber.put("chickn",12);
+        birdNumber.put("chcken",123);
+        birdNumber.put("chic",1234);
+        Assertions.assertEquals(7,birdNumber.size());
     }
     @Test
-    public void testHashMap(){
-        Map<String, Integer> birdNumber = new HashMap<String, Integer>(1);
+    public void RemoveTest(){
+        VanquishHashMap<String, Integer> birdNumber = new VanquishHashMap<String, Integer>(1);
         birdNumber.put("chicken",9);
-        birdNumber.put("chicken",2);
-        birdNumber.put("chicken",6);
-        birdNumber.put("chicken",10);
-        birdNumber.put("chicken",12);
-        birdNumber.put("chicken",123);
-        birdNumber.put("chicken",1234);
+        birdNumber.put("chiken",2);
+        birdNumber.put("cickn",6);
+        birdNumber.put("chicn",10);
+        birdNumber.put("chickn",12);
+        birdNumber.put("chcken",123);
+        birdNumber.put("chic",1234);
+        birdNumber.remove("chic");
         System.out.println(birdNumber.size());
-        Assertions.assertEquals(1234,birdNumber.get("chicken"));
+        Assertions.assertEquals(false,birdNumber.containsKey("chic"));
     }
 }
