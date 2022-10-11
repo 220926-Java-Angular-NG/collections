@@ -7,7 +7,7 @@ public class VanquishHashMapTest{
     public void connectionTest(){
         VanquishHashMap<String ,Integer> map = new VanquishHashMap<String,Integer>();
         map.put("Chicken",12);
-        System.out.println(map.buckets[Math.abs("Chicken".hashCode()%map.maxBucketCapacity)].get(0).key);
-        Assert.assertEquals("Chicken",map.buckets[Math.abs("Chicken".hashCode()%map.maxBucketCapacity)].get(0).key);
+        System.out.println(map.buckets[Math.abs("Chicken".hashCode()%map.maxBucketCapacity)].get(0).getKey());
+        Assert.assertEquals("Chicken",map.buckets[Math.abs("Chicken".hashCode()%map.maxBucketCapacity)].get(0).getKey());
     }
 }
