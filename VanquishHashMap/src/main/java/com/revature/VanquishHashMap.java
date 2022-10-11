@@ -1,5 +1,4 @@
 package com.revature;
-
 import java.util.*;
 
 public class VanquishHashMap<K,V> implements Map {
@@ -77,7 +76,15 @@ public class VanquishHashMap<K,V> implements Map {
     }
 
     public Set keySet() {
-        return null;
+        Set<Object> keys = new HashSet<Object>();
+
+        for (LinkedList<Node> nodes : buckets){
+            for (Node node: nodes){
+                keys.add(node.key);
+            }
+        }
+
+        return keys;
     }
 
     public Collection values() {
