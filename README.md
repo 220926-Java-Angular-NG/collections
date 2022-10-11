@@ -10,7 +10,7 @@
   - Presentations will begin at 4pm EST
 
 ## Teams
-### Alchemy
-### Amplifire
-### Synergy
-### Vanquish
+### Alchemy - PriorityQueue
+### Amplifire - ArrayDeque
+### Synergy - TreeSet
+### Vanquish - HashMap
