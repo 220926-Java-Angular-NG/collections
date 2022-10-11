@@ -29,6 +29,7 @@ public class VanquishHashMap<K,V> implements Map {
     }
     /** Initial capacity and load factor passes in as parameters
      * @param loadFactor set to 75% so to prevent the hash table from overloading
+     * @param initialCapacity sets how many buckets the Map starts with
      * sets upper limit of how full the hash table is allowed to get which is when
      * number of entries > loadfactor * current capacity of the hash table
      * the table is then rehashed automatically and capacity is doubled
@@ -36,6 +37,16 @@ public class VanquishHashMap<K,V> implements Map {
 
     public VanquishHashMap(int initialCapacity,double loadFactor) {
         this.bucketCount = initialCapacity;
+        this.loadFactor=loadFactor;
+        initBuckets();
+    }
+    /** Initial capacity and load factor passes in as parameters
+     * @param loadFactor set to 75% so to prevent the hash table from overloading
+     * sets upper limit of how full the hash table is allowed to get which is when
+     * number of entries > loadfactor * current capacity of the hash table
+     * the table is then rehashed automatically and capacity is doubled
+     */
+    public VanquishHashMap(double loadFactor) {
         this.loadFactor=loadFactor;
         initBuckets();
     }

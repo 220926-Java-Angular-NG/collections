@@ -67,4 +67,18 @@ public class VanquishHashMapTest{
         birdNumber.put("BirdUp",1);
         Assertions.assertEquals(false,birdNumber.isEmpty());
     }
+    @Test
+    public void containsValue(){
+        VanquishHashMap<String, Integer> birdNumber = new VanquishHashMap<String, Integer>(8,(double)0.5);
+        birdNumber.put("BirdUp",1);
+        birdNumber.put("chicken",9);
+        birdNumber.put("chiken",2);
+        birdNumber.put("cickn",6);
+        birdNumber.put("chicn",10);
+        birdNumber.put("chickn",12);
+        birdNumber.put("chcken",123);
+        birdNumber.put("chic",1234);
+        Assertions.assertEquals(true,birdNumber.containsValue(123));
+    }
+
 }
